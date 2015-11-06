@@ -1,0 +1,276 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>First Steps &mdash; docs-sample 1.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="docs-sample 1.0 documentation" href="index.html"/>
+        <link rel="prev" title="Welcome to docs-sample’s documentation!" href="index.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> docs-sample
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="">First Steps</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#creating-bucket">Creating bucket</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sending-data">Sending data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#curl">curl</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#httpie">httpie</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">docs-sample</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>First Steps</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/firststeps.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="first-steps">
+<h1>First Steps<a class="headerlink" href="#first-steps" title="Permalink to this headline">¶</a></h1>
+<p>Hi, to introduce you the Tago features, let’s start with a hands on example. In this example, let’s create a full ecosystem that communicates with an emergency power generator localized in Chicago, Il.</p>
+<p>The following real-time information will be obtained:</p>
+<ul class="simple">
+<li>Fuel level</li>
+<li>Oil pressure</li>
+<li>Battery level</li>
+<li>Running hours</li>
+<li>Location</li>
+</ul>
+<p>Also, we will setup actions that will be triggered when some variables reach a defined value. In this case, Tago will send an SMS to the operating manager when the Fuel level is lower than 10%.</p>
+<p>Let&#8217;s do this!</p>
+<iframe width="560" height="315" src="https://www.youtube.com/watch?v=TChfKm8CJac" frameborder="0" allowfullscreen></iframe><div class="section" id="creating-bucket">
+<h2>Creating bucket<a class="headerlink" href="#creating-bucket" title="Permalink to this headline">¶</a></h2>
+<p>Bucket is your storage tool; all data received from your devices or subscriptions are stored here. You may create as many buckets as you wish. Let’s create one for the Power generator device.</p>
+<p>First, access the Tago Admin and click on Data on the sidebar. Then, click on Add new bucket blue button.</p>
+<img src="https://tago.io/assets/img/screenshot/create_bucket_1.png" alt="" width="800" height="600"><p>Now, enter with the bucket name and description. You can edit the fields later if needed.</p>
+<img src="https://tago.io/assets/img/screenshot/create_bucket_2.png" alt="" width="800" height="600"><p>Great! You created your bucket! It should be something like this:</p>
+<img src="https://tago.io/assets/img/screenshot/create_bucket_3.png" alt="" width="800" height="600"><small>Tip: We have APIs to create devices and anything else that is shown here. You may check the full API documentation if you want to build automated scripts.</small><div class="highlight-javascript"><div class="highlight"><pre><span class="kr">export</span> <span class="k">default</span> <span class="kd">function</span> <span class="nx">OptionFactory</span> <span class="p">(</span><span class="nx">variable</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kr">const</span> <span class="nx">option_identifiable</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">({},</span> <span class="p">{</span>
+        <span class="nx">id</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">get</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">bucket</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">device</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">variable</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">bucket</span><span class="p">.</span><span class="nx">id</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">device</span><span class="p">.</span><span class="nx">id</span><span class="p">;</span>
+                <span class="p">}</span> <span class="k">else</span><span class="p">{</span>
+                    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">variable</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">counter</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">});</span>
+
+    <span class="k">return</span> <span class="nx">_</span><span class="p">.</span><span class="nx">assign</span><span class="p">(</span><span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">option_identifiable</span><span class="p">),</span> <span class="nx">variable</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="sending-data">
+<h2>Sending data<a class="headerlink" href="#sending-data" title="Permalink to this headline">¶</a></h2>
+<p>Sending data from a device to Tago system is very easy. Tago API is RESTful.</p>
+<p>Basically, when you are sending data to Tago, you are writing on its database. So, you only need to POST the data in the route <a class="reference external" href="https://api.tago.io/data">https://api.tago.io/data</a> and use a device token in the header.</p>
+<p>All API responses are in JSON format. Also, you can send your data in the JSON format. Some types of data are available.</p>
+<p>The variable structure is:</p>
+<ul class="simple">
+<li>variable - string - required</li>
+<li>value - string/int/float - required</li>
+<li>unit - string - required</li>
+<li>type - string</li>
+<li>time - string/js_dateformat</li>
+<li>location - string/geojson</li>
+<li>Here is one example:</li>
+</ul>
+<div class="highlight-json"><div class="highlight"><pre>{ &#39;value&#39;: 32, &#39;variable&#39;: &#39;fuel_level&#39;, &#39;unit&#39;: &#39;%&#39; }
+</pre></div>
+</div>
+<p>Now, let’s send this variable using curl and httpie. We will need the device token created in the earlier step.</p>
+<div class="section" id="curl">
+<h3>curl<a class="headerlink" href="#curl" title="Permalink to this headline">¶</a></h3>
+<p>Idk Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+</div>
+<div class="section" id="httpie">
+<h3>httpie<a class="headerlink" href="#httpie" title="Permalink to this headline">¶</a></h3>
+<p>It was very easy, right? We may even have an SDK for your language for simple plug-and-play. Check out our [Github page](<a class="reference external" href="https://github.com/tago-io">https://github.com/tago-io</a>).</p>
+<p>This is an example using node.js. You can copy the code from our github page.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Welcome to docs-sample’s documentation!" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Luiz Crisostomo.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
