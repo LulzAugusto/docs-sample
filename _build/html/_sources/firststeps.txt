@@ -17,7 +17,7 @@ Let's do this!
 
 .. raw:: html
 
-    <iframe width="560" height="315" src="https://www.youtube.com/watch?v=TChfKm8CJac" frameborder="0" allowfullscreen></iframe>
+    <iframe width="560" height="315" src="http://www.youtube.com/watch?v=TChfKm8CJac" frameborder="0" allowfullscreen></iframe>
 
 Creating bucket
 ---------------
