@@ -17,7 +17,7 @@ Let's do this!
 
 .. raw:: html
 
-	<video src="_static/video.mp4"></video>
+	<video src="_static/video.mp4" width="1024" height="768"></video>
 
 Creating bucket
 ---------------
